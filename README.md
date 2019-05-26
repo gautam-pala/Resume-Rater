@@ -48,7 +48,7 @@ We then find the keywords using the below formula:
 
 where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, and `nargmax` is the `argmax` for the top `n` keywords. Since `P(Z|D=d)` and `P(K=k|Z=z)` are provided by LDA, we can compute `P(K|D=d)` easily for all `k`. All we need to do is select `n` to specify how many keywords we want for each document `d`.
 
-Example of `nargmax P(K|D=d)``:
+Example of `nargmax P(K|D=d)`:
 
     CV of Ben Lee: [finance: 0.15, engineering: 0.35, algorithms: 0.2, managed: 0.1, applied: 0.2]
     Top 3 Keywords: engineering, algorithm, applied
