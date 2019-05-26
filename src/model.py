@@ -74,6 +74,7 @@ class RatingModel:
         Function to load a pre-trained fixed model
         :param model_json: the json filename of the model
         """
+        dirname = os.path.dirname(model_json)
 
         try:
             with open(model_json, "r") as f:
@@ -85,23 +86,25 @@ class RatingModel:
             )
 
         try:
-            self.model = pd.read_csv(j["model_csv"])
+            path = os.path.join(dirname, j["model_csv"])
+            self.model = pd.read_csv(path)
         except Exception as e:
             print(e)
             raise RatingModel.RatingModelError(
-                "model_csv %s in model_json is not a valid path" % j["model_csv"]
+                "model_csv %s in model_json is not a valid path" % path
             )
 
         try:
             self.keywords = []
-            with open(j["keywords"], "r") as f:
+            path = os.path.join(dirname, j["keywords"])
+            with open(path, "r") as f:
                 for line in f:
                     if line:
                         self.keywords.append(line.strip())
         except Exception as e:
             print(e)
             raise RatingModel.RatingModelError(
-                "model_keywords %s in model_json is not a valid path" % j["keywords"]
+                "model_keywords %s in model_json is not a valid path" % path
             )
 
         self._type = "fixed"
@@ -122,32 +125,35 @@ class RatingModel:
             )
 
         try:
-            self.model = pd.read_csv(os.path.join(dirname, j["model_csv"]))
+            path = os.path.join(dirname, j["model_csv"])
+            self.model = pd.read_csv(path)
         except Exception as e:
             print(e)
             raise RatingModel.RatingModelError(
-                "model_csv %s in model_json is not a valid path" % j["model_csv"]
+                "model_csv %s in model_json is not a valid path" % path
             )
 
         try:
-            self.lda = LdaModel.load(os.path.join(dirname, j["lda"]))
+            path = os.path.join(dirname, j["lda"])
+            self.lda = LdaModel.load(path)
             self.dictionary = self.lda.id2word
         except Exception as e:
             print(e)
             raise RatingModel.RatingModelError(
-                "lda %s in model_json is not a valid path" % j["lda"]
+                "lda %s in model_json is not a valid path" % path
             )
 
         try:
+            path = os.path.join(dirname, j["top_k_words"])
             self.top_k_words = []
-            with open(os.path.join(dirname, j["top_k_words"]), "r") as f:
+            with open(path, "r") as f:
                 for line in f:
                     if line:
                         self.top_k_words.append(line.strip())
         except Exception as e:
             print(e)
             raise RatingModel.RatingModelError(
-                "top_k_words %s in model_json is not a valid path" % j["top_k_words"]
+                "top_k_words %s in model_json is not a valid path" % path
             )
 
         self._type = "lda"
@@ -272,11 +278,11 @@ class RatingModel:
             # are only being used to compare with keywords generated
             seen_chunks_words = pdf_df["words"][i]
             all_tokens_chunks = pdf_df["all_t_c"][i]
-            temp_out = self.__trainKMWM(seen_chunks_words,
-                                        all_tokens_chunks,
-                                        keywords)
+            temp_out = self.__trainKMWM(seen_chunks_words, all_tokens_chunks, keywords)
             if temp_out is None:
-                print("Either parser cannot detect text or too few words in resume for analysis. Most usually the former. Skip document.")
+                print(
+                    "Either parser cannot detect text or too few words in resume for analysis. Most usually the former. Skip document."
+                )
                 continue
             km_scores, wm_scores = temp_out
 
@@ -297,20 +303,12 @@ class RatingModel:
                 print("%d data trained" % pdf_count)
 
         dirname = os.path.dirname(os.path.abspath(__file__))
-        full_model_path = os.path.join(
-            dirname, "models/model_lda", model_name + ".csv"
-        )
-        full_lda_path = os.path.join(
-            dirname, "models/model_lda", model_name + "_lda"
-        )
+        full_model_path = os.path.join(dirname, "models/model_lda", model_name + ".csv")
+        full_lda_path = os.path.join(dirname, "models/model_lda", model_name + "_lda")
         full_top_k_words_path = os.path.join(
-            dirname,
-            "models/model_lda",
-            model_name + "_top_k_words.txt",
+            dirname, "models/model_lda", model_name + "_top_k_words.txt"
         )
-        full_json_path = os.path.join(
-            dirname, "models/model_lda", model_name + ".json"
-        )
+        full_json_path = os.path.join(dirname, "models/model_lda", model_name + ".json")
 
         self.model = generateDFFromData(data, save_csv=True, filename=full_model_path)
         # Save lda to disk.
@@ -319,9 +317,9 @@ class RatingModel:
         with open(full_top_k_words_path, "w") as f:
             f.write("\n".join(self.top_k_words))
         jmodel = {
-            "model_csv": full_model_path,
-            "lda": full_lda_path,
-            "top_k_words": full_top_k_words_path,
+            "model_csv": model_name + ".csv",
+            "lda": model_name + "_lda",
+            "top_k_words": model_name + "_top_k_words.txt",
         }
         with open(full_json_path, "w") as f:
             json.dump(jmodel, f)
@@ -432,9 +430,7 @@ class RatingModel:
             dirname, "models/model_fixed", model_name + ".csv"
         )
         full_keywords_path = os.path.join(
-            dirname,
-            "models/model_fixed",
-            model_name + "_keywords.txt",
+            dirname, "models/model_fixed", model_name + "_keywords.txt"
         )
         full_json_path = os.path.join(
             dirname, "models/model_fixed", model_name + ".json"
@@ -446,7 +442,8 @@ class RatingModel:
         with open(full_keywords_path, "w") as f:
             f.write(keywords_file)
 
-        jmodel = {"model_csv": full_model_path, "keywords": full_keywords_path}
+        jmodel = {"model_csv": model_name + ".csv",
+                  "keywords": model_name + "_keywords.txt"}
         with open(full_json_path, "w") as f:
             json.dump(jmodel, f)
 
@@ -595,9 +592,12 @@ class RatingModel:
                 raise RatingModel.RatingModelError("No LDA found")
 
             seen_chunks_words, all_tokens_chunks = getAllTokensAndChunks(doc)
-            seen_chunks_words, all_tokens_chunks = list(seen_chunks_words), list(all_tokens_chunks)
+            seen_chunks_words, all_tokens_chunks = (
+                list(seen_chunks_words),
+                list(all_tokens_chunks),
+            )
 
-            #scoring
+            # scoring
             new_seen_chunks_words = self.__keep_top_k_words(seen_chunks_words)
             bow = self.dictionary.doc2bow(new_seen_chunks_words)
             doc_distribution = np.array(
@@ -630,7 +630,9 @@ class RatingModel:
 
             temp_out = self.__trainKMWM(seen_chunks_words, all_tokens_chunks, keywords)
             if temp_out is None:
-                print("Either parser cannot detect text or too few words in resume for analysis. Most usually the former. Skip document.")
+                print(
+                    "Either parser cannot detect text or too few words in resume for analysis. Most usually the former. Skip document."
+                )
             km_scores, wm_scores = temp_out
 
             # average of km/wm scores for all keywords

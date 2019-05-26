@@ -1,7 +1,7 @@
 mypy
 python-docx
 nltk
-tika-python
+tika
 spacy
 numpy
 pandas
