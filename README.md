@@ -33,7 +33,14 @@ We then use Latent Dirichlet Allocation (LDA), a generative model that assumes t
 
 It computes:
   1. `P(Z|D=d)`, the probability that for each `z` in `Z`, `d` is generated
+
+
+      e.g. CV of Ben Lee: [z_1: 0.2, z_2: 0.3, z_3: 0.1, z_4: 0.4]
+
   2. `P(K=k|Z=z)`, the probability that a word `k` is picked from topic `z`
+
+
+      e.g. z_1: [computer: 0.2, engineering: 0.3, leadership: 0.1, software: 0.4]
 
 We then find the keywords using the below formula:
 
@@ -41,6 +48,10 @@ We then find the keywords using the below formula:
 
 where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, and `nargmax` is the `argmax` for the top `n` keywords. Since `P(Z|D=d)` and `P(K=k|Z=z)` are provided by LDA, we can compute `P(K|D=d)` easily for all `k`. All we need to do is select `n` to specify how many keywords we want for each document `d`.
 
+Example of `nargmax P(K|D=d)``:
+
+    CV of Ben Lee: [finance: 0.15, engineering: 0.35, algorithms: 0.2, managed: 0.1, applied: 0.2]
+    Top 3 Keywords: engineering, algorithm, applied
 
 ### Rating Implementation
 With keywords determined (supervised) or found (unsupervised), we then use matching strategies to match keywords to the document to fulfil (1) in `Domain Knowledge`, as well as matching words within the document to fulfil (2) in `Domain Knowledge`.
