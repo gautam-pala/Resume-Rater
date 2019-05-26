@@ -189,8 +189,14 @@ For information extraction, a Named Entity Recognition approach would work much 
 
 ## Installation
 
-### External Dependencies
-Python3
+Use Python3
+
+    pip3 install -r requirements.txt
+    python3 pre_requisites.py
+
+Test run
+
+    python3 main.py --type fixed "src/data/test/Dong Xing_Catherine Zhang_Equity Research Intern.pdf" --model_name model
 
 
 ## Usage
