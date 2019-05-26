@@ -38,17 +38,17 @@ It computes:
     e.g. CV of Ben Lee: [z_1: 0.2, z_2: 0.3, z_3: 0.1, z_4: 0.4]
 
 
-  2. `P(K=k|Z=z)`, the probability that a word `k` is picked from topic `z`
+  2. `P(K=k|Z=z, D=d)`, the probability that a word `k` is picked from topic `z`, given `d`
 
 
-    e.g. z_1: [computer: 0.2, engineering: 0.3, leadership: 0.1, software: 0.4]
+    e.g. CV of Ben Lee => z_1: [computer: 0.2, engineering: 0.3, leadership: 0.1, software: 0.4]
 
 
 We then find the keywords using the below formula:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](assets/README-261d17ed.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](assets/README-44cb7278.gif)
 
-where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, and `nargmax` is the `argmax` for the top `n` keywords. Since `P(Z|D=d)` and `P(K=k|Z=z)` are provided by LDA, we can compute `P(K|D=d)` easily for all `k`. All we need to do is select `n` to specify how many keywords we want for each document `d`.
+where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, and `nargmax` is the `argmax` for the top `n` keywords. Since `P(Z|D=d)` and `P(K=k|Z=z, D=d)` are provided by LDA, we can compute `P(K|D=d)` easily for all `k`. All we need to do is select `n` to specify how many keywords we want for each document `d`.
 
 Example of `nargmax P(K|D=d)`:
 
