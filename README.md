@@ -151,7 +151,10 @@ For information extraction, a rule-based prediction approach is used due to reas
     - Financial Analysis, Marketing Management, Writing.
 
     Skills:
-    Security, Finance, Writing, Analysis, Accounting, Research, Marketing, Email, Economics, Strategy, Excel, Powerpoint, Financial analysis, Presentation, Design, Technical, Cfa, Banking, Reports, Due diligence, Word, Mobile, Risk management, Analyze, Ai, Data analysis, Microsoft office, Modeling
+    Security, Finance, Writing, Analysis, Accounting, Research, Marketing, Email, Economics,
+    Strategy, Excel, Powerpoint, Financial analysis, Presentation, Design, Technical,
+    Cfa, Banking, Reports, Due diligence, Word, Mobile, Risk management, Analyze,
+    Ai, Data analysis, Microsoft office, Modeling
     ----------
     Rating: 9
 
