@@ -54,6 +54,11 @@ With keywords determined (supervised) or found (unsupervised), we then use match
 
 ** Most intercepts plateau at 7-degree, where adjusted R2 is max. However, at 7-d, intercept ratio between keywords are very low, which means words similar to the keywords and not so similar are hard to differentiate. Also, there is a steep drop in intercept value from 7-d to 8-d. As 8-d difference is similar to 1-d, with much higher adj R2, we can get a more accurate keyword dissimilarity using 8-d.
 
+![](assets/README-e95322b6.png)
+Can see that most adj R2s plateau at 7-d
+
+![](assets/README-42594eea.png)
+Steep drop of intercept from 7-d to 8-d
 
 ![](assets/README-71ce7220.png)
 regression of mean of top `n` correlations for a particular keyword
@@ -71,13 +76,6 @@ for another keyword
 
 Illustration with "finance" as the keyword. The first row are the correlations w.r.t to the keyword, which are used for `KM`. The upper triangle less the first row and the diagonal are the within correlations of words w.r.t to the keyword. Since the correlation matrix is symmetric, the lower triangle can be ignored.
 
-
-
-![](assets/README-e95322b6.png)
-Can see that most adj R2s plateau at 7-d
-
-![](assets/README-42594eea.png)
-Steep drop of intercept from 7-d to 8-d
 
 For the final rating score, we have `final_score = KM * WM` and then we take the `max`, `min`, and `sd` to compute the rating score using min-max normalization with max capped at `max-sd`. We do that because the scores are usually pretty normal and if not the bulk of the scores will barely pass.
 
