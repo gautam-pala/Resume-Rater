@@ -52,6 +52,9 @@ With keywords determined (supervised) or found (unsupervised), we then use match
   - For the supervised strategy, since the keywords have no weights attached to them, we average the intercepts for each keyword to get the `KM` score
   - For the unsupervised strategy, since the probabiltiies of the keywords can be derived from the LDA model, we can use them as weight coefficients for each intercept in a linear combination to get the `KM` score
 
+** Most intercepts plateau at 7-degree, where adjusted R2 is max. However, at 7-d, intercept ratio between keywords are very low, which means words similar to the keywords and not so similar are hard to differentiate. Also, there is a steep drop in intercept value from 7-d to 8-d. As 8-d difference is similar to 1-d, with much higher adj R2, we can get a more accurate keyword dissimilarity using 8-d.
+
+
 ![](assets/README-71ce7220.png)
 regression of mean of top `n` correlations for a particular keyword
 
@@ -59,13 +62,16 @@ regression of mean of top `n` correlations for a particular keyword
 for another keyword
 
 2. Within Match (WM): Look for match within words matched by keywords (Conciseness of experience)
-  - For each keyword, get the mean of the correlations between the n'th (for n = 10..100, factor of 10) largest correlated word vectors wr.t. the keyword vector less the keyword vector to itself (since corr=1), and then plot the regression of the 8-degree** polynomial of the means and get the intercept
+  - For each keyword, get the mean of the correlations amongst the n'th (for n = 10..100, factor of 10) largest correlated word vectors wr.t. the keyword vector less the keyword vector to itself (since corr=1), and then plot the regression of the 8-degree** polynomial of the means and get the intercept
   -  For the supervised strategy, since the keywords have no weights attached to them, we average the intercepts for each keyword to get the `WM` score
   - For the unsupervised strategy, since the probabiltiies of the keywords can be derived from the LDA model, we can use them as weight coefficients for each intercept in a linear combination to get the `WM` score
 
 
+![](assets/README-acd3e18d.png)
 
-** Most intercepts plateau at 7-degree, where adjusted R2 is max. However, at 7-d, intercept ratio between keywords are very low, which means words similar to the keywords and not so similar are hard to differentiate. Also, there is a steep drop in intercept value from 7-d to 8-d. As 8-d difference is similar to 1-d, with much higher adj R2, we can get a more accurate keyword dissimilarity using 8-d.
+Illustration with "finance" as the keyword. The first row are the correlations w.r.t to the keyword, which are used for `KM`. The upper triangle less the first row and the diagonal are the within correlations of words w.r.t to the keyword. Since the correlation matrix is symmetric, the lower triangle can be ignored.
+
+
 
 ![](assets/README-e95322b6.png)
 Can see that most adj R2s plateau at 7-d
