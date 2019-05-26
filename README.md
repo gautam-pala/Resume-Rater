@@ -87,7 +87,7 @@ Another LDA-trained model
 ### Potential Additional Rating Implementations
 We can also model uniqueness (3 in `Domain Knowledge`) by using the topic distributions of each resume document and comparing the dissimilarity. However, due to its high instability, it is not incorporated into the model until proper function modelling is done.
 
-##### Strategy:
+#### Strategy:
 Between Divergence (BD): Look for diversity amongst candidates (Uniqueness)
 - For each candidate, get the topic probability distributions (default=20 for our LDA model)
 - Compare the distribution with the distributions of other candidates using Jensen-Shannon divergence[4], a symmetric and finite version of the Kullback-Leibler divergence.
@@ -96,10 +96,10 @@ Between Divergence (BD): Look for diversity amongst candidates (Uniqueness)
 
 A naive implementation of incorporating the `BD` score is by dividing the `BD` score with `KM*WM`, since `BD` is inversely proportional to uniqueness. However, that strategy distorts the important of `KM*WM`, making the ratings seem no different from random. Another strategy could be having it as a separate score or adding a function of `BD` to the score i.e. `final_score = KM*WM + f(BD)`. Due to the sophisticated of this feature, it is not incorporated into the model as of now.
 
-#### Information Extraction Implementation
+### Information Extraction Implementation
 For information extraction, a rule-based prediction approach is used due to reasons mentioned in the `Introduction`. The rules-based approach does pretty well for standard resumes, but suffers from low precision on sophisticatedly-designed resumes (irrelevant info captured). False positives are minimized by first detecting category boxes (Like "Work Experience" and "Education") and then performing relevant extractions.
 
-##### Problems faced
+#### Problems faced
 - For a good company and name detection algorithm, a Named Entity Recognition (NER) model has to be trained on a large dataset containing many different CVs well-labelled for it to generalize well.
 - Since labelling takes a lot of time, and since there are no well pre-trained NER models out there, non-AI methods are used
 - Some CVs have very complicated document formatting (very hard to parse)
@@ -275,6 +275,9 @@ Model and LDA model will be saved in `src/models/model_lda`
 
 ## References
 [1] https://github.com/DataTurks-Engg/Entity-Recognition-In-Resumes-SpaCy
+
 [2] https://spacy.io/usage/linguistic-features#named-entities
+
 [3] https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation
+
 [4] https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
