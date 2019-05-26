@@ -37,10 +37,12 @@ It computes:
 
       e.g. CV of Ben Lee: [z_1: 0.2, z_2: 0.3, z_3: 0.1, z_4: 0.4]
 
+
   2. `P(K=k|Z=z)`, the probability that a word `k` is picked from topic `z`
 
 
       e.g. z_1: [computer: 0.2, engineering: 0.3, leadership: 0.1, software: 0.4]
+
 
 We then find the keywords using the below formula:
 
