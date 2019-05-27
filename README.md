@@ -48,7 +48,7 @@ We then find the keywords using the below formula:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](assets/README-8ed74e4c.gif)
 
-where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, and `nargmax` is the `argmax` for the top `n` keywords. We remove `P(D|KZ)` and `P(D|Z)` from the equation since we are getting `argmax`. Since `P(Z|D=d)` and `P(K=k|Z=z)` are provided by LDA, we can compute `P(K|D=d)` easily for all `k`. All we need to do is select `n` to specify how many keywords we want for each document `d`.
+where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, and `nargmax` is the `argmax` for the top `n` keywords. We assume `P(D|KZ)` ~= `P(D|Z)` by assuming `K` is approximately independent to `Z` i.e. a keyword `k` only appears in one `z`. In practice, it works since we are only taking the top `n` values and they usually are unique to each other. Since `P(Z|D=d)` and `P(K=k|Z=z)` are provided by LDA, we can compute `P(K|D=d)` easily for all `k`. All we need to do is select `n` to specify how many keywords we want for each document `d`.
 
 Example of `nargmax P(K|D=d)`:
 
