@@ -38,21 +38,26 @@ It computes:
     e.g. CV of Ben Lee: [z_1: 0.2, z_2: 0.3, z_3: 0.1, z_4: 0.4]
 
 
-  2. `P(K=k|Z=z)`, the probability that a word `k` is picked from topic `z`
+  2. `P(K|Z)`, the probability that a word `k` of `K` is picked from topic `z` of `Z`
 
 
-    e.g. z_1: [computer: 0.2, engineering: 0.3, leadership: 0.1, software: 0.4]
+    e.g. z_1: [computer: 0.3, engineering: 0.2, leadership: 0.1, software: 0.05, ...] == 1
+         z_2: [finance: 0.33, quantitative: 0.21, leadership: 0.1, asset: 0.08, ...] == 1
+         z_3: [management: 0.12, general: 0.1, report: 0.07, lead: 0.05, ...] == 1
+         z_4: [human: 0.22, resource: 0.21, recruitment: 0.1, award: 0.08, ...] == 1
 
 
-We then find the keywords using the below formula:
+We then model this as a Bayesian Network and then find the keywords using the below formula:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](assets/README-8ed74e4c.gif)
+![](assets/README-fa6659f6.png)
 
-where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, and `nargmax` is the `argmax` for the top `n` keywords. We assume `P(D|KZ)` ~= `P(D|Z)` by assuming `K` is approximately independent to `Z` i.e. a keyword `k` only appears in one `z`. In practice, it works since we are only taking the top `n` values and they usually are unique to each other. Since `P(Z|D=d)` and `P(K=k|Z=z)` are provided by LDA, we can compute `P(K|D=d)` easily for all `k`. All we need to do is select `n` to specify how many keywords we want for each document `d`.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](assets/README-a48ee885.gif)
+
+where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, and `nargmax` is the `argmax` for the top `n` keywords. We factorize `P(K|ZD)` ~= `P(K|Z)` since the probability of K is only directly conditioned on Z. Since `P(Z|D=d)` and `P(K=k|Z=z)` are provided by LDA, we can compute `P(K|D=d)` easily for all `k`. All we need to do is select `n` to specify how many keywords we want for each document `d`.
 
 Example of `nargmax P(K|D=d)`:
 
-    CV of Ben Lee: [finance: 0.15, engineering: 0.35, algorithms: 0.2, managed: 0.1, applied: 0.2]
+    CV of Ben Lee: [finance: 0.3, engineering: 0.25, algorithms: 0.1, managed: 0.055, applied: 0.044, ...] == 1
     Top 3 Keywords: engineering, algorithm, applied
 
 ### Rating Implementation
