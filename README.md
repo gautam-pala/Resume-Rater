@@ -69,25 +69,28 @@ With keywords determined (supervised) or found (unsupervised), we then use match
   - For each keyword, get the mean of the n'th (for n = 10..100, factor of 10) largest correlation values of the keyword vector to the words in the document, and then plot the regression of the 8-degree** polynomial of the means and get the intercept
   - For the supervised strategy, since the keywords have no weights attached to them, we average the intercepts for each keyword to get the `KM` score
   - For the unsupervised strategy, since the probabiltiies of the keywords can be derived from the LDA model, we can use them as weight coefficients for each intercept in a linear combination to get the `KM` score. The weights first have to be normalized such that they sum to 1 e.g.
+  
+  
+
+        Before:
+        weights: z1:0.2 * {apple: 0.1, bear: 0.1, charlie: 0.1}
+                       => {apple: 0.02, bear: 0.02, charlie: 0.02}
+                 z2:0.1 * {dog: 0.1, elephant: 0.2, finger: 0.2}
+                       => {dog: 0.01, elephant: 0.02, finger: 0.02}
+                 z3:0.2 * {goat: 0.1, happy: 0.1, indigo: 0.2}
+                       => {goat: 0.02, happy: 0.02, indigo: 0.04}
+        Sum != 1
 
 
-    Before:
-    weights: z1:0.2 : {apple: 0.1, bear: 0.1, charlie: 0.1}
-                   => {apple: 0.02, bear: 0.02, charlie: 0.02}
-             z2:0.1 : {dog: 0.1, elephant: 0.2, finger: 0.2}
-                   => {dog: 0.01, elephant: 0.02, finger: 0.02}
-             z3:0.2 : {goat: 0.1, happy: 0.1, indigo: 0.2}
-                   => {goat: 0.02, happy: 0.02, indigo: 0.04}
-    Sum != 1
+        After:
+        weights: z1:0.4 * {apple: 0.33, bear: 0.33, charlie: 0.33}
+                       => {apple: 0.133, bear: 0.133, charlie: 0.133}
+                 z2:0.2 * {dog: 0.2, elephant: 0.4, finger: 0.4}
+                       => {dog: 0.04, elephant: 0.08, finger: 0.08}
+                 z3:0.4 * {goat: 0.25, happy: 0.25, indigo: 0.5}
+                       => {goat: 0.1, happy: 0.1, indigo: 0.2}
+        Sum == 1
 
-    After:
-    weights: z1:0.4 : {apple: 0.33, bear: 0.33, charlie: 0.33}
-                   => {apple: 0.133, bear: 0.133, charlie: 0.133}
-             z2:0.2 : {dog: 0.2, elephant: 0.4, finger: 0.4}
-                   => {dog: 0.04, elephant: 0.08, finger: 0.08}
-             z3:0.4 : {goat: 0.25, happy: 0.25, indigo: 0.5}
-                   => {goat: 0.1, happy: 0.1, indigo: 0.2}
-    Sum == 1
 
 ** Most intercepts plateau at 7-degree, where adjusted R2 is max. However, at 7-d, intercept ratio between keywords are very low, which means words similar to the keywords and not so similar are hard to differentiate. Also, there is a steep drop in intercept value from 7-d to 8-d. As 8-d difference is similar to 1-d, with much higher adj R2, we can get a more accurate keyword dissimilarity using 8-d.
 
