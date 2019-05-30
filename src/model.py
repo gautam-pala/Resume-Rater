@@ -557,7 +557,7 @@ class RatingModel:
 
         return km_scores, wm_scores
 
-    def test(self, filename: str, info_extractor: InfoExtractor):
+    def test(self, filename: str, info_extractor: Optional[InfoExtractor]):
         """
         Test a document and print the extracted information and rating
         :param filename: name of resume file
@@ -644,12 +644,14 @@ class RatingModel:
         max_score = self.model["score"].iloc[0] - np.std(self.model["score"])
         min_score = self.model["score"].iloc[-1]
 
-        rating = (final_score - min_score) * 10 / (max_score - min_score)
-        print("-" * 10)
-        info_extractor.extractFromFile(filename)
-        print("-" * 10)
-        print("Rating: %d" % rating)
-        subprocess.call(["open", filename])
+        rating = max(0, min(round((final_score - min_score) * 10 / float(max_score - min_score), 1), 10))
+        if info_extractor is not None:
+            print("-" * 10)
+            info_extractor.extractFromFile(filename)
+            print("-" * 10)
+        print("Rating: %.1f" % rating)
+        if info_extractor is not None:
+            subprocess.call(["open", filename])
 
 
 if __name__ == "__main__":

@@ -33,6 +33,12 @@ parser.add_argument(
     nargs="?",
     help="the pre-trained model to use",
 )
+parser.add_argument(
+    "--no_info",
+    dest="no_info",
+    action="store_true",
+    help="don't show extracted info and don't open document"
+)
 ### FOR TRAIN
 parser.add_argument(
     "--train",
@@ -88,7 +94,10 @@ if args["train"] is None:
         )
 
     r = RatingModel(_type, model_path)
-    infoExtractor = InfoExtractor(r.nlp, r.parser)
+    if args["no_info"]:
+        infoExtractor = None
+    else:
+        infoExtractor = InfoExtractor(r.nlp, r.parser)
     r.test(path_to_resume, infoExtractor)
 else:
     training_dir = args["train"]

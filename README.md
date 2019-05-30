@@ -125,6 +125,9 @@ For an LDA-trained model
 Another LDA-trained model
 
 
+### Reducing Variance
+As the LDA model suffers from high variance due to its use of Gibb's Sampling, a way to minimize variance is to generate ratings across multiple models and then getting the average. From tests done on multiple models, the ratings given from each model is pretty consistent i.e. small intra-model variance, which suggests that the LDA model approach is useful and that we do not need to average on too many models to minimize variance (Central Limit Theorem).
+
 ### Potential Additional Rating Implementations
 We can also model uniqueness (3 in `Domain Knowledge`) by using the topic distributions of each resume document and comparing the dissimilarity. However, due to its high instability, it is not incorporated into the model until proper function modelling is done.
 
