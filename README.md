@@ -120,11 +120,14 @@ Illustration with "finance" as the keyword. The first row are the correlations w
 For the final rating score, we have `final_score = KM * WM`. We then take the `mean` and `std` of the model and then give a rating score based on how much `final_score` is away from the `mean`. The formula is given by:
 
 
-    rating = min(10, max(0, 5 + (final_score - mean)/sd))
+    diff = (final_score - mean)/sd
+    rating = min(10, max(0, 5 + diff))
+
 
 For example, if `final_score` is 0.4, `mean` is 0.3, and `sd` is 0.05, then `rating` is `rating= 5 + (0.4-0.3)/0.05 = 7`. We have a `min` and `max` to cap the scores between 0 and 10, and it makes reasonable sense since we do not really expect scores to be more than 5 standard deviations away from the mean.
 
-We can perform do this formula because the scores are pretty normally distributed. Low intra-model variance also helps with justifying the use of the score.
+
+We can use these formulas because the scores are pretty normally distributed. Low intra-model variance also helps with justifying the use of the score.
 
 ![](assets/README-d953d21b.png)
 For a fixed Keywords-trained model
