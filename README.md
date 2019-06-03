@@ -69,8 +69,8 @@ With keywords determined (supervised) or found (unsupervised), we then use match
   - For each keyword, get the mean of the n'th (for n = 10..100, factor of 10) largest correlation values of the keyword vector to the words in the document, and then plot the regression of the 8-degree** polynomial of the means and get the intercept
   - For the supervised strategy, since the keywords have no weights attached to them, we average the intercepts for each keyword to get the `KM` score
   - For the unsupervised strategy, since the probabiltiies of the keywords can be derived from the LDA model, we can use them as weight coefficients for each intercept in a linear combination to get the `KM` score. The weights first have to be normalized such that they sum to 1 e.g.
-  
-  
+
+
 
         Before:
         weights: z1:0.2 * {apple: 0.1, bear: 0.1, charlie: 0.1}
@@ -117,8 +117,14 @@ for another keyword
 Illustration with "finance" as the keyword. The first row are the correlations w.r.t to the keyword, which are used for `KM`. The upper triangle less the first row and the diagonal are the within correlations of words w.r.t to the keyword. Since the correlation matrix is symmetric, the lower triangle can be ignored.
 
 
-For the final rating score, we have `final_score = KM * WM` and then we take the `max`, `min`, and `sd` to compute the rating score using min-max normalization with max capped at `max-sd`. We do that because the scores are usually pretty normal and if not the bulk of the scores will barely pass.
+For the final rating score, we have `final_score = KM * WM`. We then take the `mean` and `std` of the model and then give a rating score based on how much `final_score` is away from the `mean`. The formula is given by:
 
+
+    rating = min(10, max(0, 5 + (final_score - mean)/sd))
+
+For example, if `final_score` is 0.4, `mean` is 0.3, and `sd` is 0.05, then `rating` is `rating= 5 + (0.4-0.3)/0.05 = 7`. We have a `min` and `max` to cap the scores between 0 and 10, and it makes reasonable sense since we do not really expect scores to be more than 5 standard deviations away from the mean.
+
+We can perform do this formula because the scores are pretty normally distributed. Low intra-model variance also helps with justifying the use of the score.
 
 ![](assets/README-d953d21b.png)
 For a fixed Keywords-trained model
@@ -130,6 +136,9 @@ Another LDA-trained model
 
 ### Reducing Variance
 As the LDA model suffers from high variance due to its use of Gibb's Sampling, a way to minimize variance is to generate ratings across multiple models and then getting the average. From tests done on multiple models, the ratings given from each model is pretty consistent i.e. small intra-model variance, which suggests that the LDA model approach is useful and that we do not need to average on too many models to minimize variance (Central Limit Theorem).
+
+![](assets/README-52f82445.png)
+Plots of 5 different LDA-trained models on the same dataset. The mean and standard deviations have low variance and all 5 models are pretty similar in shape to each other.
 
 ### Potential Additional Rating Implementations
 We can also model uniqueness (3 in `Domain Knowledge`) by using the topic distributions of each resume document and comparing the dissimilarity. However, due to its high instability, it is not incorporated into the model until proper function modelling is done.

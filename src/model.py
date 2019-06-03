@@ -641,10 +641,12 @@ class RatingModel:
 
             final_score = km_score * wm_score
 
-        max_score = self.model["score"].iloc[0] - np.std(self.model["score"])
-        min_score = self.model["score"].iloc[-1]
+        # max_score = self.model["score"].iloc[0] - np.std(self.model["score"])
+        # min_score = self.model["score"].iloc[-1]
+        mean = np.mean(self.model["score"])
+        sd = np.std(self.model["score"])
 
-        rating = max(0, min(round((final_score - min_score) * 10 / float(max_score - min_score), 1), 10))
+        rating = min(10, max(0, round(5 + (final_score-mean)/sd, 2)))
         if info_extractor is not None:
             print("-" * 10)
             info_extractor.extractFromFile(filename)
