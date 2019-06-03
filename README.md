@@ -58,7 +58,7 @@ where `P(K|D=d)` is the probability that for each `k` in `K`, `d` is generated, 
 Example of `nargmax P(K|D=d)`:
 
     CV of Ben Lee: [finance: 0.3, engineering: 0.25, algorithms: 0.1, managed: 0.055, applied: 0.044, ...] == 1
-    Top 3 Keywords: engineering, algorithm, applied
+    Top 3 Keywords: finance, engineering, algorithm
 
 ### Rating Implementation
 With keywords determined (supervised) or found (unsupervised), we then use matching strategies to match keywords to the document to fulfil (1) in `Domain Knowledge`, as well as matching words within the document to fulfil (2) in `Domain Knowledge`.
